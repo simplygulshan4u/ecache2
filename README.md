@@ -3,7 +3,7 @@
 # 🦄 ecache2
 <p align="center">
   <a href="#">
-    <img src="https://github.com/orca-zhang/ecache2/raw/master/doc/logo.svg">
+    <img src="https://github.com/orca-zhang/ecache22/raw/master/doc/logo.svg">
   </a>
 </p>
 
@@ -11,16 +11,16 @@
   <a href="/go.mod#L3" alt="go version">
     <img src="https://img.shields.io/badge/go%20version-%3E=1.18-brightgreen?style=flat"/>
   </a>
-  <a href="https://goreportcard.com/badge/github.com/orca-zhang/ecache2" alt="goreport">
-    <img src="https://goreportcard.com/badge/github.com/orca-zhang/ecache2">
+  <a href="https://goreportcard.com/badge/github.com/orca-zhang/ecache22" alt="goreport">
+    <img src="https://goreportcard.com/badge/github.com/orca-zhang/ecache22">
   </a>
   <a href="https://orca-zhang.semaphoreci.com/projects/ecache2" alt="buiding status">
     <img src="https://orca-zhang.semaphoreci.com/badges/ecache2.svg?style=shields">
   </a>
-  <a href="https://codecov.io/gh/orca-zhang/ecache2" alt="codecov">
-    <img src="https://codecov.io/gh/orca-zhang/ecache2/branch/master/graph/badge.svg?token=Tt42j8A42u"/>
+  <a href="https://codecov.io/gh/orca-zhang/ecache22" alt="codecov">
+    <img src="https://codecov.io/gh/orca-zhang/ecache22/branch/master/graph/badge.svg?token=Tt42j8A42u"/>
   </a>
-  <a href="https://github.com/orca-zhang/ecache2/blob/master/LICENSE" alt="license MIT">
+  <a href="https://github.com/orca-zhang/ecache22/blob/master/LICENSE" alt="license MIT">
     <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat">
   </a>
   <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Forca-zhang%2Fcache?ref=badge_shield" alt="FOSSA Status">
@@ -52,7 +52,7 @@
       <td></td>
       <td><a href="https://github.com/allegro/bigcache">bigcache</a></td>
       <td><a href="https://github.com/FishGoddess/cachego">cachego</a></td>
-      <td><a href="https://github.com/orca-zhang/ecache2"><strong>ecache2🌟</strong></a></td>
+      <td><a href="https://github.com/orca-zhang/ecache22"><strong>ecache2🌟</strong></a></td>
       <td><a href="https://github.com/coocood/freecache">freecache</a></td>
       <td><a href="https://github.com/bluele/gcache">gcache</a></td>
       <td><a href="https://github.com/patrickmn/go-cache">gocache</a></td>
@@ -191,10 +191,10 @@
    </tr>
 </table>
 
-![](https://github.com/orca-zhang/ecache2/raw/master/doc/benchmark.png)
+![](https://github.com/orca-zhang/ecache22/raw/master/doc/benchmark.png)
 
 > gc pause测试结果 [代码由`bigcache`提供](https://github.com/allegro/bigcache-bench)（数值越低越好）
-![](https://github.com/orca-zhang/ecache2/raw/master/doc/gc.png)
+![](https://github.com/orca-zhang/ecache22/raw/master/doc/gc.png)
 
 ### 目前正在生产环境大流量验证中
 - [`已验证`]公众号后台(几百QPS)：用户信息、订单信息、配置信息
@@ -208,7 +208,7 @@
 import (
     "time"
 
-    "github.com/orca-zhang/ecache2"
+    "github.com/orca-zhang/ecache22"
 )
 ```
 
@@ -218,13 +218,13 @@ import (
 > **泛型版本**：支持多种 key 类型，string key 使用 BKRD hash，整数 key 直接使用值分片
 ``` go
 // string key - 使用 BKRD hash
-var c = ecache.NewLRUCache[string](16, 200, 10 * time.Second)
+var c = ecache2.NewLRUCache[string](16, 200, 10 * time.Second)
 
 // int64 key - 不使用 BKRD hash，直接使用 key 值分片（性能更优）
-var c2 = ecache.NewLRUCache[int64](16, 200, 10 * time.Second)
+var c2 = ecache2.NewLRUCache[int64](16, 200, 10 * time.Second)
 
 // int32 key - 同样不使用 BKRD hash
-var c3 = ecache.NewLRUCache[int32](16, 200, 10 * time.Second)
+var c3 = ecache2.NewLRUCache[int32](16, 200, 10 * time.Second)
 ```
 
 #### 设置缓存（预计5秒）
@@ -249,7 +249,7 @@ c.Del("uid1")
 #### 下载包（预计5秒）
 
 > 非go modules模式：\
-> sh>  ```go get -u github.com/orca-zhang/ecache2```
+> sh>  ```go get -u github.com/orca-zhang/ecache22```
 
 > go modules模式：\
 > sh>  ```go mod tidy && go mod download```
@@ -262,11 +262,11 @@ c.Del("uid1")
 
 - `NewLRUCache`
   - 第一个参数是桶的个数，用来分散锁的粒度，每个桶都会使用独立的锁，最大值为65535，支持65536个实例
-    - 不用担心，随意设置一个就好，`ecache`会找一个合适的数字便于后面掩码计算
+    - 不用担心，随意设置一个就好，`ecache2`会找一个合适的数字便于后面掩码计算
   - 第二个参数是每个桶所能容纳的item个数上限，最大值为65535
-    - 意味着`ecache`全部写满的情况下，应该有`第一个参数 X 第二个参数`个item，最多能支持存储42亿个item
+    - 意味着`ecache2`全部写满的情况下，应该有`第一个参数 X 第二个参数`个item，最多能支持存储42亿个item
   - \[`可选`\]第三个参数是每个item的过期时间
-    - `ecache`使用内部计时器提升性能，默认100ms精度，每秒校准
+    - `ecache2`使用内部计时器提升性能，默认100ms精度，每秒校准
     - 不传或者传`0`，代表永久有效
 
 ## 最佳实践
@@ -293,18 +293,18 @@ ecache2 支持多种 key 类型，整数类型 key 无需哈希计算，性能�
 
 ``` go
 // string key - 使用 BKRD hash
-var cStr = ecache.NewLRUCache[string](16, 200, 10 * time.Second)
+var cStr = ecache2.NewLRUCache[string](16, 200, 10 * time.Second)
 cStr.Put("uid1", userInfo)
 
 // int64 key - 直接使用 key 值分片，无需 BKRD hash
-var cInt64 = ecache.NewLRUCache[int64](16, 200, 10 * time.Second)
+var cInt64 = ecache2.NewLRUCache[int64](16, 200, 10 * time.Second)
 cInt64.Put(int64(12345), userInfo)
 if v, ok := cInt64.Get(int64(12345)); ok {
     // 使用 v
 }
 
 // int32 key - 同样直接使用 key 值分片
-var cInt32 = ecache.NewLRUCache[int32](16, 200, 10 * time.Second)
+var cInt32 = ecache2.NewLRUCache[int32](16, 200, 10 * time.Second)
 cInt32.Put(int32(456), userInfo)
 ```
 
@@ -329,7 +329,7 @@ if b, ok := c.GetBytes("uid1"); ok {
 
 > 直接在`NewLRUCache()`后面跟`.LRU2(<num>)`就好，参数`<num>`代表`LRU-2`热队列的item上限个数（每个桶）
 ``` go
-var c = ecache.NewLRUCache[string](16, 200, 10 * time.Second).LRU2(1024)
+var c = ecache2.NewLRUCache[string](16, 200, 10 * time.Second).LRU2(1024)
 ```
 
 ### 空缓存哨兵（不存在的对象不用再回源）
@@ -351,7 +351,7 @@ if v, ok := c.Get("uid1"); ok {
 
 ### 需要修改部分数据，且用对象指针方式存储时
 
-> 比如，我们从`ecache`中获取了`*UserInfo`类型的用户信息缓存`v`，需要修改其状态字段
+> 比如，我们从`ecache2`中获取了`*UserInfo`类型的用户信息缓存`v`，需要修改其状态字段
 ``` go
 import (
     "github.com/jinzhu/copier"
@@ -385,7 +385,7 @@ cache.Inspect(func(action int, key string, iface *interface{}, bytes []byte, sta
   // - 如何获取正确的值 -
   //   - `Put`:      `*iface`
   //   - `PutBytes`: `bytes`
-  //   - `PutInt64`: `ecache.ToInt64(bytes)`
+  //   - `PutInt64`: `ecache2.ToInt64(bytes)`
 })
 ```
 
@@ -399,7 +399,7 @@ cache.Inspect(func(action int, key string, iface *interface{}, bytes []byte, sta
     // - 如何获取正确的值 -
     //   - `Put`:      `*iface`
     //   - `PutBytes`: `bytes`
-    //   - `PutInt64`: `ecache.ToInt64(bytes)`
+    //   - `PutInt64`: `ecache2.ToInt64(bytes)`
     return true // 是否继续遍历
   })
 ```
@@ -411,7 +411,7 @@ cache.Inspect(func(action int, key string, iface *interface{}, bytes []byte, sta
 ##### 引入stats包
 ``` go
 import (
-    "github.com/orca-zhang/ecache2/stats"
+    "github.com/orca-zhang/ecache22/stats"
 )
 ```
 
@@ -440,7 +440,7 @@ stats.Stats().Range(func(k, v interface{}) bool {
 ### 引入dist包
 ``` go
 import (
-    "github.com/orca-zhang/ecache2/dist"
+    "github.com/orca-zhang/ecache22/dist"
 )
 ```
 
@@ -459,7 +459,7 @@ var _ = dist.Bind("token", caches...)
 #### go-redis v7及以下版本
 ``` go
 import (
-    "github.com/orca-zhang/ecache2/dist/goredis/v7"
+    "github.com/orca-zhang/ecache22/dist/goredis/v7"
 )
 
 dist.Init(goredis.Take(redisCli)) // redisCli是*redis.RedisClient类型
@@ -469,7 +469,7 @@ dist.Init(goredis.Take(redisCli, 100000)) // 第二个参数是channel缓冲区�
 #### go-redis v8及以上版本
 ``` go
 import (
-    "github.com/orca-zhang/ecache2/dist/goredis"
+    "github.com/orca-zhang/ecache22/dist/goredis"
 )
 
 dist.Init(goredis.Take(redisCli)) // redisCli是*redis.RedisClient类型
@@ -480,7 +480,7 @@ dist.Init(goredis.Take(redisCli, 100000)) // 第二个参数是channel缓冲区�
 > 注意⚠️`github.com/gomodule/redigo` 要求最低版本 `go 1.14`
 ``` go
 import (
-    "github.com/orca-zhang/ecache2/dist/redigo"
+    "github.com/orca-zhang/ecache22/dist/redigo"
 )
 
 dist.Init(redigo.Take(pool)) // pool是*redis.Pool类型
@@ -493,27 +493,27 @@ dist.Init(redigo.Take(pool)) // pool是*redis.Pool类型
 dist.OnDel("user", "uid1") // user是池子名称，uid1是要删除的key
 ```
 
-## 从 `ecache` 升级到 `ecache2`
+## 从 `ecache2` 升级到 `ecache2`
 
 - **重大更新**：ecache2 是完全基于 Go 泛型的重构版本
 - 主要变化：
-1. 引入包 `github.com/orca-zhang/ecache2`（已经是新版本）
-2. `ecache.NewLRUCache` 改为 `ecache.NewLRUCache[string]`（需要指定 key 类型）
+1. 引入包 `github.com/orca-zhang/ecache22`（已经是新版本）
+2. `ecache2.NewLRUCache` 改为 `ecache2.NewLRUCache[string]`（需要指定 key 类型）
 3. Go 版本要求从 1.11+ 升级到 **1.18+**
 4. 新增特性：支持整数类型 key（int64、int32 等），整数 key 无需 BKRD hash，性能更优
 
 ## 使用[`lrucache`](http://github.com/orca-zhang/lrucache)的老用户升级指导
 
 - 只需四步：
-1. 引入包 `github.com/orca-zhang/lrucache` 改为 `github.com/orca-zhang/ecache2`
-2. `lrucache.NewSyncCache` 改为 `ecache.NewLRUCache[string]`
+1. 引入包 `github.com/orca-zhang/lrucache` 改为 `github.com/orca-zhang/ecache22`
+2. `lrucache.NewSyncCache` 改为 `ecache2.NewLRUCache[string]`
 3. 第3个参数从默认的单位秒改为`*time.Second`
 4. `Delete`方法改为`Del`
 
 # 不希望你白来
 
 - 客官，既然来了，学点东西再走吧！
-- 我想尽力让你明白`ecache`做了啥，以及为什么要这么做
+- 我想尽力让你明白`ecache2`做了啥，以及为什么要这么做
 
 ## 什么是本地内存缓存
 
@@ -554,10 +554,10 @@ dist.OnDel("user", "uid1") // user是池子名称，uid1是要删除的key
 
 ## 设计思路
 
-> `ecache`是[`lrucache`](http://github.com/orca-zhang/lrucache)库的升级版本
+> `ecache2`是[`lrucache`](http://github.com/orca-zhang/lrucache)库的升级版本
 
 - 最下层是用原生map和双链表实现的最基础`LRU`（最久未访问）
-  - PS：我实现的其他版本（[go](https://github.com/orca-zhang/lrucache) / [c++](https://github.com/ez8-co/linked_hash) / [js](https://github.com/orca-zhang/ecache2js)）在leetcode都是超越100%的解法
+  - PS：我实现的其他版本（[go](https://github.com/orca-zhang/lrucache) / [c++](https://github.com/ez8-co/linked_hash) / [js](https://github.com/orca-zhang/ecache22js)）在leetcode都是超越100%的解法
 - 第2层包了分桶策略、并发控制、过期控制（会自动选择2的幂次个桶，便于掩码计算）
 - 第2.5层用很简单的方式实现了`LRU-2`能力，代码不超过20行，直接看源码（搜关键词`LRU-2`）
 - **第3层（ecache2新增）**：基于 Go 泛型实现，支持多种 key 类型
@@ -588,7 +588,7 @@ dist.OnDel("user", "uid1") // user是池子名称，uid1是要删除的key
     - redis不可用、网络错误
     - 消费goroutine panic
     - 存在未生效节点（灰度`canary`发布，或者发布过程中）的情况下，比如
-      - 已使用`ecache`但首次添加此插件
+      - 已使用`ecache2`但首次添加此插件
       - 新加入缓存的数据或者新加的删除操作
 
 ### 关于性能
@@ -617,10 +617,10 @@ dist.OnDel("user", "uid1") // user是池子名称，uid1是要删除的key
 - 就像我在C++版性能剖析器里提到的[性能优化的几个层次](https://github.com/ez8-co/ezpp#性能优化的几个层次)，单从一个层次考虑性能并不高明
 - 《第三层次》里有一句“没有比不存在的东西性能更快的了”（类似奥卡姆剃刀），能砍掉一定不要想着优化
 - 比如为了减少GC大块分配内存，却提供`[]byte`的值存储，意味着可能需要序列化、拷贝（虽不在库的性能指标里，人家用还是要算，包括：GC、内存、CPU）
-- 如果序列化的部分可以复用用在协议层拼接，能做到`ZeroCopy`，那也无可厚非，但实际分层以后，无法在协议层直接实现拼接，而`ecache`存储指针直接省了额外的部分
+- 如果序列化的部分可以复用用在协议层拼接，能做到`ZeroCopy`，那也无可厚非，但实际分层以后，无法在协议层直接实现拼接，而`ecache2`存储指针直接省了额外的部分
 - 我想表达的并不是GC优化不重要，而更多应该结合场景，使用者额外损耗也需要考虑，而非宣称gc-free，结果用起来并非那样
 - 我所崇尚的“暴力美学”是极简，缺陷率和代码量成正比，复杂的东西早晚会被淘汰，`KISS`才是王道
-- `ecache`一共只有不到300行，千行bug率一定的情况下，它的bug不会多
+- `ecache2`一共只有不到300行，千行bug率一定的情况下，它的bug不会多
 
 ## 常见问题
 > 问：一个实例可以存储多种对象吗？
@@ -698,12 +698,12 @@ dist.OnDel("user", "uid1") // user是池子名称，uid1是要删除的key
 
 ## 赞助
 
-通过成为赞助商来支持这个项目。 您的logo将显示在此处，并带有指向您网站的链接。 [[成为赞助商](https://opencollective.com/ecache#sponsor)]
+通过成为赞助商来支持这个项目。 您的logo将显示在此处，并带有指向您网站的链接。 [[成为赞助商](https://opencollective.com/ecache2#sponsor)]
 
-<a href="https://opencollective.com/ecache/sponsor/0/website" target="_blank"><img src="https://opencollective.com/ecache/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/ecache/sponsor/1/website" target="_blank"><img src="https://opencollective.com/ecache/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/ecache/sponsor/2/website" target="_blank"><img src="https://opencollective.com/ecache/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/ecache/sponsor/3/website" target="_blank"><img src="https://opencollective.com/ecache/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/ecache2/sponsor/0/website" target="_blank"><img src="https://opencollective.com/ecache2/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/ecache2/sponsor/1/website" target="_blank"><img src="https://opencollective.com/ecache2/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/ecache2/sponsor/2/website" target="_blank"><img src="https://opencollective.com/ecache2/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/ecache2/sponsor/3/website" target="_blank"><img src="https://opencollective.com/ecache2/sponsor/3/avatar.svg"></a>
 
 ## 贡献者
 
@@ -713,8 +713,8 @@ dist.OnDel("user", "uid1") // user是池子名称，uid1是要删除的key
 
 并感谢我们所有的支持者！ 🙏
 
-<a href="https://opencollective.com/ecache/backer/0/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache/backer/0/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/ecache/backer/1/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache/backer/1/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/ecache/backer/2/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache/backer/2/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/ecache/backer/3/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache/backer/3/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/ecache#backers" target="_blank"><img src="https://opencollective.com/ecache/contributors.svg?width=890" /></a>
+<a href="https://opencollective.com/ecache2/backer/0/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache2/backer/0/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/ecache2/backer/1/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache2/backer/1/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/ecache2/backer/2/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache2/backer/2/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/ecache2/backer/3/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache2/backer/3/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/ecache2#backers" target="_blank"><img src="https://opencollective.com/ecache2/contributors.svg?width=890" /></a>

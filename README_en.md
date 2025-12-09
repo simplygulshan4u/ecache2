@@ -3,7 +3,7 @@
 # 🦄 ecache
 <p align="center">
   <a href="#">
-    <img src="https://github.com/orca-zhang/ecache2raw/master/doc/logo.svg">
+    <img src="https://github.com/orca-zhang/ecache22raw/master/doc/logo.svg">
   </a>
 </p>
 
@@ -11,16 +11,16 @@
   <a href="/go.mod#L3" alt="go version">
     <img src="https://img.shields.io/badge/go%20version-%3E=1.11-brightgreen?style=flat"/>
   </a>
-  <a href="https://goreportcard.com/badge/github.com/orca-zhang/ecache2 alt="goreport">
-    <img src="https://goreportcard.com/badge/github.com/orca-zhang/ecache2>
+  <a href="https://goreportcard.com/badge/github.com/orca-zhang/ecache22 alt="goreport">
+    <img src="https://goreportcard.com/badge/github.com/orca-zhang/ecache22>
   </a>
   <a href="https://orca-zhang.semaphoreci.com/projects/ecache" alt="buiding status">
-    <img src="https://orca-zhang.semaphoreci.com/badges/ecache.svg?style=shields">
+    <img src="https://orca-zhang.semaphoreci.com/badges/ecache2.svg?style=shields">
   </a>
-  <a href="https://codecov.io/gh/orca-zhang/ecache" alt="codecov">
-    <img src="https://codecov.io/gh/orca-zhang/ecache/branch/master/graph/badge.svg?token=F6LQbADKkq"/>
+  <a href="https://codecov.io/gh/orca-zhang/ecache2" alt="codecov">
+    <img src="https://codecov.io/gh/orca-zhang/ecache2/branch/master/graph/badge.svg?token=F6LQbADKkq"/>
   </a>
-  <a href="https://github.com/orca-zhang/ecache2blob/master/LICENSE" alt="license MIT">
+  <a href="https://github.com/orca-zhang/ecache22blob/master/LICENSE" alt="license MIT">
     <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat">
   </a>
   <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Forca-zhang%2Fcache?ref=badge_shield" alt="FOSSA Status">
@@ -50,7 +50,7 @@
       <td></td>
       <td><a href="https://github.com/allegro/bigcache">bigcache</a></td>
       <td><a href="https://github.com/FishGoddess/cachego">cachego</a></td>
-      <td><a href="https://github.com/orca-zhang/ecache2><strong>ecache🌟</strong></a></td>
+      <td><a href="https://github.com/orca-zhang/ecache22><strong>ecache🌟</strong></a></td>
       <td><a href="https://github.com/coocood/freecache">freecache</a></td>
       <td><a href="https://github.com/bluele/gcache">gcache</a></td>
       <td><a href="https://github.com/patrickmn/go-cache">gocache</a></td>
@@ -189,10 +189,10 @@
    </tr>
 </table>
 
-![](https://github.com/orca-zhang/ecache2raw/master/doc/benchmark.png)
+![](https://github.com/orca-zhang/ecache22raw/master/doc/benchmark.png)
 
 > gc pause test result [code provided by `bigcache`](https://github.com/allegro/bigcache-bench) (the lower the better)
-![](https://github.com/orca-zhang/ecache2raw/master/doc/gc.png)
+![](https://github.com/orca-zhang/ecache22raw/master/doc/gc.png)
 
 ### Stablity validation in production environment
 - [`Confirmed`]Official Account Backend(hundreds QPS), user & order info, configrations.
@@ -206,14 +206,14 @@
 import (
     "time"
 
-    "github.com/orca-zhang/ecache2
+    "github.com/orca-zhang/ecache22
 )
 ```
 
 #### Definition (almost 5s)
 > Can be placed in any position (global is also OK), it is recommended to define nearby
 ``` go
-var c = ecache.NewLRUCache(16, 200, 10 * time.Second)
+var c = ecache2.NewLRUCache(16, 200, 10 * time.Second)
 ```
 
 #### Put Item (almost 5s)
@@ -238,7 +238,7 @@ c.Del("uid1")
 #### Download Package (almost 5s)
 
 > non-go modules mode:\
-> sh>  ```go get -u github.com/orca-zhang/ecache2``
+> sh>  ```go get -u github.com/orca-zhang/ecache22``
 
 > go modules mode:\
 > sh>  ```go mod tidy && go mod download```
@@ -251,11 +251,11 @@ c.Del("uid1")
 
 - `NewLRUCache`
   - First parameter is the number of buckets, each bucket will use an independent lock, max to 65535(for 65536 buckets)
-    - Don't worry, just set as you want, `ecache` will find a suitable number which is convenient for mask calculation later
+    - Don't worry, just set as you want, `ecache2` will find a suitable number which is convenient for mask calculation later
   - Second parameter is the number of items that each bucket can hold, max to 65535
-    - When `ecache` is full, there should be `first parameter X second parameter` item, can store max to 4.2 billion items
+    - When `ecache2` is full, there should be `first parameter X second parameter` item, can store max to 4.2 billion items
   - \[`Optional`\]Third parameter is the expiration time of each item
-    - `ecache` uses internal counter to improve performance, default 100ms accuracy, calibration every second
+    - `ecache2` uses internal counter to improve performance, default 100ms accuracy, calibration every second
     - No parameter or pass `0`, means permanent
 
 ## Best Practices
@@ -300,7 +300,7 @@ if b, ok := c.GetBytes("uid1"); ok {
 
 > Just follow `NewLRUCache()` directly with `.LRU2(<num>)`, and the parameter `<num>` represents the number of items in the `LRU-2` hot queue (per bucket)
 ``` go
-var c = ecache.NewLRUCache(16, 200, 10 * time.Second).LRU2(1024)
+var c = ecache2.NewLRUCache(16, 200, 10 * time.Second).LRU2(1024)
 ```
 
 ### Empty cache sentry (non-existent objects do not need to query the source)
@@ -322,7 +322,7 @@ if v, ok := c.Get("uid1"); ok {
 
 ### Need to modify, and store the object pointer
 
-> For example, we get the user information cache `v` of type `*UserInfo` from `ecache`, and need to modify its status field
+> For example, we get the user information cache `v` of type `*UserInfo` from `ecache2`, and need to modify its status field
 ``` go
 import (
     "github.com/jinzhu/copier"
@@ -356,7 +356,7 @@ cache.Inspect(func(action int, key string, iface *interface{}, bytes []byte, sta
    // - how to fetch right value -
   //   - `Put`:      `*iface`
   //   - `PutBytes`: `bytes`
-  //   - `PutInt64`: `ecache.ToInt64(bytes)`
+  //   - `PutInt64`: `ecache2.ToInt64(bytes)`
 })
 ```
 
@@ -370,7 +370,7 @@ cache.Inspect(func(action int, key string, iface *interface{}, bytes []byte, sta
     // - how to fetch right value -
     //   - `Put`:      `*iface`
     //   - `PutBytes`: `bytes`
-    //   - `PutInt64`: `ecache.ToInt64(bytes)`
+    //   - `PutInt64`: `ecache2.ToInt64(bytes)`
     return true // true stands for walk on
   })
 ```
@@ -382,7 +382,7 @@ cache.Inspect(func(action int, key string, iface *interface{}, bytes []byte, sta
 ##### Import the `stats` package
 ``` go
 import (
-    "github.com/orca-zhang/ecache2stats"
+    "github.com/orca-zhang/ecache22stats"
 )
 ```
 
@@ -411,7 +411,7 @@ stats.Stats().Range(func(k, v interface{}) bool {
 ### Import the `dist` package
 ``` go
 import (
-    "github.com/orca-zhang/ecache2dist"
+    "github.com/orca-zhang/ecache22dist"
 )
 ```
 
@@ -430,7 +430,7 @@ var _ = dist.Bind("token", caches...)
 #### go-redis v7 and below
 ``` go
 import (
-    "github.com/orca-zhang/ecache2dist/goredis/v7"
+    "github.com/orca-zhang/ecache22dist/goredis/v7"
 )
 
 dist.Init(goredis.Take(redisCli)) // redisCli is *redis.RedisClient type
@@ -440,7 +440,7 @@ dist.Init(goredis.Take(redisCli, 100000)) // Second parameter is size of channel
 #### go-redis v8 and above
 ``` go
 import (
-    "github.com/orca-zhang/ecache2dist/goredis"
+    "github.com/orca-zhang/ecache22dist/goredis"
 )
 
 dist.Init(goredis.Take(redisCli)) // redisCli is *redis.RedisClient type
@@ -451,7 +451,7 @@ dist.Init(goredis.Take(redisCli, 100000)) // Second parameter is size of channel
 > Note:⚠️ `github.com/gomodule/redigo` requires minimum version `go 1.14`
 ``` go
 import (
-    "github.com/orca-zhang/ecache2dist/redigo"
+    "github.com/orca-zhang/ecache22dist/redigo"
 )
 
 dist.Init(redigo.Take(pool)) // pool is of *redis.Pool type
@@ -467,15 +467,15 @@ dist.OnDel("user", "uid1") // user is name of pool, uid1 is the key that want to
 ## Update guide for old [`lrucache`](http://github.com/orca-zhang/lrucache) fans
 
 - Only four steps:
-1. Import `github.com/orca-zhang/ecache2 instead of `github.com/orca-zhang/lrucache`
-2. `ecache.NewLRUCache` instead of `lrucache.NewSyncCache`
+1. Import `github.com/orca-zhang/ecache22 instead of `github.com/orca-zhang/lrucache`
+2. `ecache2.NewLRUCache` instead of `lrucache.NewSyncCache`
 3. Third parameter should add unit `*time.Second`
 4. `Delete` method replace to `Del`
 
 # You won't leave empty-handed
 
 - Guest officer, let's learn something before leaving!
-- I want to try my best to make you understand what `ecache` did and why.
+- I want to try my best to make you understand what `ecache2` did and why.
 
 ## What is local memory cache
 
@@ -516,10 +516,10 @@ dist.OnDel("user", "uid1") // user is name of pool, uid1 is the key that want to
 
 ## Design Ideas
 
-> `ecache` is an upgraded version of the [`lrucache`](http://github.com/orca-zhang/lrucache) library
+> `ecache2` is an upgraded version of the [`lrucache`](http://github.com/orca-zhang/lrucache) library
 
 - Bottom layer is the most basic `LRU` implemented with native map and double-linked lists (the longest not visited)
-   - PS: All other versions I implemented ([go](https://github.com/orca-zhang/lrucache) / [c++](https://github.com/ez8-co/linked_hash) / [js](https://github.com/orca-zhang/ecache2js)) in leetcode are solutions beats 100% submissions.
+   - PS: All other versions I implemented ([go](https://github.com/orca-zhang/lrucache) / [c++](https://github.com/ez8-co/linked_hash) / [js](https://github.com/orca-zhang/ecache22js)) in leetcode are solutions beats 100% submissions.
 - Second layer includes bucketing strategy, concurrency control, and expiration control (it will automatically adapt to power-of-two buckets to facilitate mask calculation)
 - The 2.5 layer implements the `LRU-2` ability in a very simple way, the code does not exceed 20 lines, directly look at the source code (search for the keyword `LRU-2`)
 
@@ -549,7 +549,7 @@ dist.OnDel("user", "uid1") // user is name of pool, uid1 is the key that want to
      - Redis is unavailable, network error
      - Consume goroutine panic
      - When not all nodes are ready (`canary` deployment, or in the process of deployment), such as
-       - Already used `ecache` but added this plugin for the first time
+       - Already used `ecache2` but added this plugin for the first time
        - Newly added cached data or newly added delete operation
 
 ### About performance
@@ -577,10 +577,10 @@ dist.OnDel("user", "uid1") // user is name of pool, uid1 is the key that want to
 - As I mentioned in the C++ version of the performance profiler [several levels of performance optimization](https://github.com/ez8-co/ezpp#性能优化的几个层次), consider at only one level is not good.
 - The Third Level says, 'Nothing is faster than nothing' (similar to Occam's razor), you should not come up with optimization if you can remove it.
 - For example, some library want to reduce GC by allocating large block of memory, but provides `[]byte` value storage, which means that it may need extra serialization and copy.
-- If the serialized part can be reused in the protocol layer that `ZeroCopy` can be achieved is OK, but very often, it's hard or impossible to reuse in the protocol layer in fact, so the `ecache` storage pointer directly so that it can omit the overhead.
+- If the serialized part can be reused in the protocol layer that `ZeroCopy` can be achieved is OK, but very often, it's hard or impossible to reuse in the protocol layer in fact, so the `ecache2` storage pointer directly so that it can omit the overhead.
 - What I want to express is that GC optimization is really important, but more that it should be combined with the scene, and extra overhead of client-end also needs to be considered, instead of claiming gc-free, the result is not that way.
 - The violent aesthetics I advocate is minimalism, the defect rate is proportional to the amount of code, complex things will be eliminated sooner or later, and `KISS` is the true king.
-- `ecache` has only less than 300 lines in total, and if the bug rate of thousand lines is fixed, there aren't many bugs in it.
+- `ecache2` has only less than 300 lines in total, and if the bug rate of thousand lines is fixed, there aren't many bugs in it.
 
 ## FAQ
 > Q: Can an instance store multiple kind of objects?
@@ -600,7 +600,7 @@ dist.OnDel("user", "uid1") // user is name of pool, uid1 is the key that want to
 
 ## Related Docs
 
-- [How to improve performance of `ecache` step by step](https://my.oschina.net/u/5577511/blog/5438484)
+- [How to improve performance of `ecache2` step by step](https://my.oschina.net/u/5577511/blog/5438484)
 
 ## Thanks
 
@@ -658,12 +658,12 @@ Gratitude to them who performed code review, errata, and valuable suggestions du
 
 ## Sponsors
 
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/ecache#sponsor)]
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/ecache2#sponsor)]
 
-<a href="https://opencollective.com/ecache/sponsor/0/website" target="_blank"><img src="https://opencollective.com/ecache/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/ecache/sponsor/1/website" target="_blank"><img src="https://opencollective.com/ecache/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/ecache/sponsor/2/website" target="_blank"><img src="https://opencollective.com/ecache/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/ecache/sponsor/3/website" target="_blank"><img src="https://opencollective.com/ecache/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/ecache2/sponsor/0/website" target="_blank"><img src="https://opencollective.com/ecache2/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/ecache2/sponsor/1/website" target="_blank"><img src="https://opencollective.com/ecache2/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/ecache2/sponsor/2/website" target="_blank"><img src="https://opencollective.com/ecache2/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/ecache2/sponsor/3/website" target="_blank"><img src="https://opencollective.com/ecache2/sponsor/3/avatar.svg"></a>
 
 ## Contributors
 
@@ -673,8 +673,8 @@ Please give us a 💖 star 💖 to support us. Thank you.
 
 And thank you to all our backers! 🙏
 
-<a href="https://opencollective.com/ecache/backer/0/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache/backer/0/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/ecache/backer/1/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache/backer/1/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/ecache/backer/2/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache/backer/2/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/ecache/backer/3/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache/backer/3/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/ecache#backers" target="_blank"><img src="https://opencollective.com/ecache/contributors.svg?width=890" /></a>
+<a href="https://opencollective.com/ecache2/backer/0/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache2/backer/0/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/ecache2/backer/1/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache2/backer/1/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/ecache2/backer/2/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache2/backer/2/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/ecache2/backer/3/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache2/backer/3/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/ecache2#backers" target="_blank"><img src="https://opencollective.com/ecache2/contributors.svg?width=890" /></a>

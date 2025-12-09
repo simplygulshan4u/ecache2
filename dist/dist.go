@@ -10,7 +10,7 @@ import (
 	"github.com/orca-zhang/ecache2"
 )
 
-const topic = "orca-zhang/ecache"
+const topic = "orca-zhang/ecache2"
 
 // `RedisCli`` interface used by `dist` component
 type RedisCli interface {
