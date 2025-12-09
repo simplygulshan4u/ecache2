@@ -3,7 +3,7 @@
 # 🦄 ecache2
 <p align="center">
   <a href="#">
-    <img src="https://github.com/orca-zhang/ecache22/raw/master/doc/logo.svg">
+    <img src="https://github.com/orca-zhang/ecache2/raw/master/doc/logo.svg">
   </a>
 </p>
 
@@ -11,20 +11,20 @@
   <a href="/go.mod#L3" alt="go version">
     <img src="https://img.shields.io/badge/go%20version-%3E=1.18-brightgreen?style=flat"/>
   </a>
-  <a href="https://goreportcard.com/badge/github.com/orca-zhang/ecache22" alt="goreport">
-    <img src="https://goreportcard.com/badge/github.com/orca-zhang/ecache22">
+  <a href="https://goreportcard.com/badge/github.com/orca-zhang/ecache2" alt="goreport">
+    <img src="https://goreportcard.com/badge/github.com/orca-zhang/ecache2">
   </a>
   <a href="https://orca-zhang.semaphoreci.com/projects/ecache2" alt="buiding status">
     <img src="https://orca-zhang.semaphoreci.com/badges/ecache2.svg?style=shields">
   </a>
-  <a href="https://codecov.io/gh/orca-zhang/ecache22" alt="codecov">
-    <img src="https://codecov.io/gh/orca-zhang/ecache22/branch/master/graph/badge.svg?token=Tt42j8A42u"/>
+  <a href="https://codecov.io/gh/orca-zhang/ecache2" alt="codecov">
+    <img src="https://codecov.io/gh/orca-zhang/ecache2/branch/master/graph/badge.svg?token=Tt42j8A42u"/>
   </a>
-  <a href="https://github.com/orca-zhang/ecache22/blob/master/LICENSE" alt="license MIT">
+  <a href="https://github.com/orca-zhang/ecache2/blob/master/LICENSE" alt="license MIT">
     <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat">
   </a>
-  <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Forca-zhang%2Fcache?ref=badge_shield" alt="FOSSA Status">
-    <img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Forca-zhang%2Fcache.svg?type=shield"/>
+  <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Forca-zhang%2Fecache2?ref=badge_shield" alt="FOSSA Status">
+    <img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Forca-zhang%2Fecache2.svg?type=shield"/>
   </a>
   <a href="https://benchplus.github.io/gocache/dev/bench/" alt="continuous benchmark">
     <img src="https://img.shields.io/badge/benchmark-click--me-brightgreen.svg?style=flat"/>
@@ -36,10 +36,10 @@
 
 - 🤏 代码量<350行、30s完成接入
 - 🚀 高性能、极简设计、并发安全
-- 🎯 **泛型支持**：支持多种 key 类型（string、int64、int32、int、uint64、uint32、uint）
-- ⚡ **智能哈希**：string key 使用 BKRD hash，整数 key 直接使用值分片（无需哈希计算）
 - 🌈 支持`LRU` 和 [`LRU-2`](#LRU-2模式)两种模式
 - 🦖 额外[小组件](#分布式一致性组件)支持分布式一致性
+- 🎯 **泛型支持**：支持多种 key 类型（string、int64、int32、int、uint64、uint32、uint）
+- ⚡ **智能哈希**：string key 使用 BKRD hash，整数 key 直接使用值分片（无需哈希计算）
 
 ## 基准性能
 
@@ -52,7 +52,7 @@
       <td></td>
       <td><a href="https://github.com/allegro/bigcache">bigcache</a></td>
       <td><a href="https://github.com/FishGoddess/cachego">cachego</a></td>
-      <td><a href="https://github.com/orca-zhang/ecache22"><strong>ecache2🌟</strong></a></td>
+      <td><a href="https://github.com/orca-zhang/ecache2"><strong>ecache2🌟</strong></a></td>
       <td><a href="https://github.com/coocood/freecache">freecache</a></td>
       <td><a href="https://github.com/bluele/gcache">gcache</a></td>
       <td><a href="https://github.com/patrickmn/go-cache">gocache</a></td>
@@ -191,10 +191,10 @@
    </tr>
 </table>
 
-![](https://github.com/orca-zhang/ecache22/raw/master/doc/benchmark.png)
+![](https://github.com/orca-zhang/ecache2/raw/master/doc/benchmark.png)
 
 > gc pause测试结果 [代码由`bigcache`提供](https://github.com/allegro/bigcache-bench)（数值越低越好）
-![](https://github.com/orca-zhang/ecache22/raw/master/doc/gc.png)
+![](https://github.com/orca-zhang/ecache2/raw/master/doc/gc.png)
 
 ### 目前正在生产环境大流量验证中
 - [`已验证`]公众号后台(几百QPS)：用户信息、订单信息、配置信息
@@ -208,7 +208,7 @@
 import (
     "time"
 
-    "github.com/orca-zhang/ecache22"
+    "github.com/orca-zhang/ecache2"
 )
 ```
 
@@ -249,7 +249,7 @@ c.Del("uid1")
 #### 下载包（预计5秒）
 
 > 非go modules模式：\
-> sh>  ```go get -u github.com/orca-zhang/ecache22```
+> sh>  ```go get -u github.com/orca-zhang/ecache2```
 
 > go modules模式：\
 > sh>  ```go mod tidy && go mod download```
@@ -411,7 +411,7 @@ cache.Inspect(func(action int, key string, iface *interface{}, bytes []byte, sta
 ##### 引入stats包
 ``` go
 import (
-    "github.com/orca-zhang/ecache22/stats"
+    "github.com/orca-zhang/ecache2/stats"
 )
 ```
 
@@ -440,7 +440,7 @@ stats.Stats().Range(func(k, v interface{}) bool {
 ### 引入dist包
 ``` go
 import (
-    "github.com/orca-zhang/ecache22/dist"
+    "github.com/orca-zhang/ecache2/dist"
 )
 ```
 
@@ -459,7 +459,7 @@ var _ = dist.Bind("token", caches...)
 #### go-redis v7及以下版本
 ``` go
 import (
-    "github.com/orca-zhang/ecache22/dist/goredis/v7"
+    "github.com/orca-zhang/ecache2/dist/goredis/v7"
 )
 
 dist.Init(goredis.Take(redisCli)) // redisCli是*redis.RedisClient类型
@@ -469,7 +469,7 @@ dist.Init(goredis.Take(redisCli, 100000)) // 第二个参数是channel缓冲区�
 #### go-redis v8及以上版本
 ``` go
 import (
-    "github.com/orca-zhang/ecache22/dist/goredis"
+    "github.com/orca-zhang/ecache2/dist/goredis"
 )
 
 dist.Init(goredis.Take(redisCli)) // redisCli是*redis.RedisClient类型
@@ -480,7 +480,7 @@ dist.Init(goredis.Take(redisCli, 100000)) // 第二个参数是channel缓冲区�
 > 注意⚠️`github.com/gomodule/redigo` 要求最低版本 `go 1.14`
 ``` go
 import (
-    "github.com/orca-zhang/ecache22/dist/redigo"
+    "github.com/orca-zhang/ecache2/dist/redigo"
 )
 
 dist.Init(redigo.Take(pool)) // pool是*redis.Pool类型
@@ -497,7 +497,7 @@ dist.OnDel("user", "uid1") // user是池子名称，uid1是要删除的key
 
 - **重大更新**：ecache2 是完全基于 Go 泛型的重构版本
 - 主要变化：
-1. 引入包 `github.com/orca-zhang/ecache22`（已经是新版本）
+1. 引入包 `github.com/orca-zhang/ecache2`（已经是新版本）
 2. `ecache2.NewLRUCache` 改为 `ecache2.NewLRUCache[string]`（需要指定 key 类型）
 3. Go 版本要求从 1.11+ 升级到 **1.18+**
 4. 新增特性：支持整数类型 key（int64、int32 等），整数 key 无需 BKRD hash，性能更优
@@ -505,7 +505,7 @@ dist.OnDel("user", "uid1") // user是池子名称，uid1是要删除的key
 ## 使用[`lrucache`](http://github.com/orca-zhang/lrucache)的老用户升级指导
 
 - 只需四步：
-1. 引入包 `github.com/orca-zhang/lrucache` 改为 `github.com/orca-zhang/ecache22`
+1. 引入包 `github.com/orca-zhang/lrucache` 改为 `github.com/orca-zhang/ecache2`
 2. `lrucache.NewSyncCache` 改为 `ecache2.NewLRUCache[string]`
 3. 第3个参数从默认的单位秒改为`*time.Second`
 4. `Delete`方法改为`Del`
@@ -557,7 +557,7 @@ dist.OnDel("user", "uid1") // user是池子名称，uid1是要删除的key
 > `ecache2`是[`lrucache`](http://github.com/orca-zhang/lrucache)库的升级版本
 
 - 最下层是用原生map和双链表实现的最基础`LRU`（最久未访问）
-  - PS：我实现的其他版本（[go](https://github.com/orca-zhang/lrucache) / [c++](https://github.com/ez8-co/linked_hash) / [js](https://github.com/orca-zhang/ecache22js)）在leetcode都是超越100%的解法
+  - PS：我实现的其他版本（[go](https://github.com/orca-zhang/lrucache) / [c++](https://github.com/ez8-co/linked_hash) / [js](https://github.com/orca-zhang/ecache2js)）在leetcode都是超越100%的解法
 - 第2层包了分桶策略、并发控制、过期控制（会自动选择2的幂次个桶，便于掩码计算）
 - 第2.5层用很简单的方式实现了`LRU-2`能力，代码不超过20行，直接看源码（搜关键词`LRU-2`）
 - **第3层（ecache2新增）**：基于 Go 泛型实现，支持多种 key 类型
@@ -696,15 +696,6 @@ dist.OnDel("user", "uid1") // user是池子名称，uid1是要删除的key
   </tr>
 </table>
 
-## 赞助
-
-通过成为赞助商来支持这个项目。 您的logo将显示在此处，并带有指向您网站的链接。 [[成为赞助商](https://opencollective.com/ecache2#sponsor)]
-
-<a href="https://opencollective.com/ecache2/sponsor/0/website" target="_blank"><img src="https://opencollective.com/ecache2/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/ecache2/sponsor/1/website" target="_blank"><img src="https://opencollective.com/ecache2/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/ecache2/sponsor/2/website" target="_blank"><img src="https://opencollective.com/ecache2/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/ecache2/sponsor/3/website" target="_blank"><img src="https://opencollective.com/ecache2/sponsor/3/avatar.svg"></a>
-
 ## 贡献者
 
 这个项目的存在要感谢所有做出贡献的人。
@@ -712,9 +703,3 @@ dist.OnDel("user", "uid1") // user是池子名称，uid1是要删除的key
 请给我们一个💖star💖来支持我们，谢谢。
 
 并感谢我们所有的支持者！ 🙏
-
-<a href="https://opencollective.com/ecache2/backer/0/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache2/backer/0/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/ecache2/backer/1/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache2/backer/1/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/ecache2/backer/2/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache2/backer/2/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/ecache2/backer/3/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache2/backer/3/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/ecache2#backers" target="_blank"><img src="https://opencollective.com/ecache2/contributors.svg?width=890" /></a>

@@ -3,7 +3,7 @@
 # 🦄 ecache
 <p align="center">
   <a href="#">
-    <img src="https://github.com/orca-zhang/ecache22raw/master/doc/logo.svg">
+    <img src="https://github.com/orca-zhang/ecache2/raw/master/doc/logo.svg">
   </a>
 </p>
 
@@ -11,20 +11,20 @@
   <a href="/go.mod#L3" alt="go version">
     <img src="https://img.shields.io/badge/go%20version-%3E=1.11-brightgreen?style=flat"/>
   </a>
-  <a href="https://goreportcard.com/badge/github.com/orca-zhang/ecache22 alt="goreport">
-    <img src="https://goreportcard.com/badge/github.com/orca-zhang/ecache22>
+  <a href="https://goreportcard.com/badge/github.com/orca-zhang/ecache2" alt="goreport">
+    <img src="https://goreportcard.com/badge/github.com/orca-zhang/ecache2>
   </a>
-  <a href="https://orca-zhang.semaphoreci.com/projects/ecache" alt="buiding status">
+  <a href="https://orca-zhang.semaphoreci.com/projects/ecache2" alt="buiding status">
     <img src="https://orca-zhang.semaphoreci.com/badges/ecache2.svg?style=shields">
   </a>
   <a href="https://codecov.io/gh/orca-zhang/ecache2" alt="codecov">
     <img src="https://codecov.io/gh/orca-zhang/ecache2/branch/master/graph/badge.svg?token=F6LQbADKkq"/>
   </a>
-  <a href="https://github.com/orca-zhang/ecache22blob/master/LICENSE" alt="license MIT">
+  <a href="https://github.com/orca-zhang/ecache2/blob/master/LICENSE" alt="license MIT">
     <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat">
   </a>
-  <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Forca-zhang%2Fcache?ref=badge_shield" alt="FOSSA Status">
-    <img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Forca-zhang%2Fcache.svg?type=shield"/>
+  <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Forca-zhang%2Fecache2?ref=badge_shield" alt="FOSSA Status">
+    <img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Forca-zhang%2Fecache2.svg?type=shield"/>
   </a>
   <a href="https://benchplus.github.io/gocache/dev/bench/" alt="continuous benchmark">
     <img src="https://img.shields.io/badge/benchmark-click--me-brightgreen.svg?style=flat"/>
@@ -38,6 +38,8 @@
 - 🚀  Extremely easy, ultra fast and  concurrency-safe
 - 🌈  Support both `LRU` mode and  [`LRU-2`](#LRU-2-mode) mode inside
 - 🦖  [Extra plugin](#Distributed-Consistency-Plugin) that support distributed consistency
+- 🎯 **Generic Support**: Supports multiple key types (string, int64, int32, int, uint64, uint32, uint)
+- ⚡ **Intelligent Hashing**: String keys use BKRD hashing, while integer keys use direct value partitioning (no hashing calculation required).
 
 ## Benchmarks
 
@@ -50,7 +52,7 @@
       <td></td>
       <td><a href="https://github.com/allegro/bigcache">bigcache</a></td>
       <td><a href="https://github.com/FishGoddess/cachego">cachego</a></td>
-      <td><a href="https://github.com/orca-zhang/ecache22><strong>ecache🌟</strong></a></td>
+      <td><a href="https://github.com/orca-zhang/ecache2><strong>ecache🌟</strong></a></td>
       <td><a href="https://github.com/coocood/freecache">freecache</a></td>
       <td><a href="https://github.com/bluele/gcache">gcache</a></td>
       <td><a href="https://github.com/patrickmn/go-cache">gocache</a></td>
@@ -189,10 +191,10 @@
    </tr>
 </table>
 
-![](https://github.com/orca-zhang/ecache22raw/master/doc/benchmark.png)
+![](https://github.com/orca-zhang/ecache2/raw/master/doc/benchmark.png)
 
 > gc pause test result [code provided by `bigcache`](https://github.com/allegro/bigcache-bench) (the lower the better)
-![](https://github.com/orca-zhang/ecache22raw/master/doc/gc.png)
+![](https://github.com/orca-zhang/ecache2/raw/master/doc/gc.png)
 
 ### Stablity validation in production environment
 - [`Confirmed`]Official Account Backend(hundreds QPS), user & order info, configrations.
@@ -206,7 +208,7 @@
 import (
     "time"
 
-    "github.com/orca-zhang/ecache22
+    "github.com/orca-zhang/ecache2
 )
 ```
 
@@ -382,7 +384,7 @@ cache.Inspect(func(action int, key string, iface *interface{}, bytes []byte, sta
 ##### Import the `stats` package
 ``` go
 import (
-    "github.com/orca-zhang/ecache22stats"
+    "github.com/orca-zhang/ecache2/stats"
 )
 ```
 
@@ -411,7 +413,7 @@ stats.Stats().Range(func(k, v interface{}) bool {
 ### Import the `dist` package
 ``` go
 import (
-    "github.com/orca-zhang/ecache22dist"
+    "github.com/orca-zhang/ecache2/dist"
 )
 ```
 
@@ -430,7 +432,7 @@ var _ = dist.Bind("token", caches...)
 #### go-redis v7 and below
 ``` go
 import (
-    "github.com/orca-zhang/ecache22dist/goredis/v7"
+    "github.com/orca-zhang/ecache2/dist/goredis/v7"
 )
 
 dist.Init(goredis.Take(redisCli)) // redisCli is *redis.RedisClient type
@@ -440,7 +442,7 @@ dist.Init(goredis.Take(redisCli, 100000)) // Second parameter is size of channel
 #### go-redis v8 and above
 ``` go
 import (
-    "github.com/orca-zhang/ecache22dist/goredis"
+    "github.com/orca-zhang/ecache2/dist/goredis"
 )
 
 dist.Init(goredis.Take(redisCli)) // redisCli is *redis.RedisClient type
@@ -451,7 +453,7 @@ dist.Init(goredis.Take(redisCli, 100000)) // Second parameter is size of channel
 > Note:⚠️ `github.com/gomodule/redigo` requires minimum version `go 1.14`
 ``` go
 import (
-    "github.com/orca-zhang/ecache22dist/redigo"
+    "github.com/orca-zhang/ecache2/dist/redigo"
 )
 
 dist.Init(redigo.Take(pool)) // pool is of *redis.Pool type
@@ -656,15 +658,6 @@ Gratitude to them who performed code review, errata, and valuable suggestions du
   </tr>
 </table>
 
-## Sponsors
-
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/ecache2#sponsor)]
-
-<a href="https://opencollective.com/ecache2/sponsor/0/website" target="_blank"><img src="https://opencollective.com/ecache2/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/ecache2/sponsor/1/website" target="_blank"><img src="https://opencollective.com/ecache2/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/ecache2/sponsor/2/website" target="_blank"><img src="https://opencollective.com/ecache2/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/ecache2/sponsor/3/website" target="_blank"><img src="https://opencollective.com/ecache2/sponsor/3/avatar.svg"></a>
-
 ## Contributors
 
 This project exists thanks to all the people who contribute.
@@ -672,9 +665,3 @@ This project exists thanks to all the people who contribute.
 Please give us a 💖 star 💖 to support us. Thank you.
 
 And thank you to all our backers! 🙏
-
-<a href="https://opencollective.com/ecache2/backer/0/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache2/backer/0/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/ecache2/backer/1/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache2/backer/1/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/ecache2/backer/2/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache2/backer/2/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/ecache2/backer/3/website?requireActive=false" target="_blank"><img src="https://opencollective.com/ecache2/backer/3/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/ecache2#backers" target="_blank"><img src="https://opencollective.com/ecache2/contributors.svg?width=890" /></a>
