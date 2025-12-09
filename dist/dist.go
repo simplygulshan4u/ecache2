@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/orca-zhang/ecache"
+	"github.com/orca-zhang/ecache2"
 )
 
 const topic = "orca-zhang/ecache"
@@ -27,7 +27,7 @@ var m sync.Map
 
 func delAll(pool, key string) {
 	if caches, _ := m.Load(pool); caches != nil {
-		for _, c := range *(caches.(*[]*ecache.Cache)) {
+		for _, c := range *(caches.(*[]*ecache2.Cache[string])) {
 			c.Del(key)
 		}
 	}
@@ -63,9 +63,9 @@ func Init(r RedisCli) {
 // Bind - to enable distributed consistency
 // `pool` is not necessary, it can be used to classify instances that store same items, but it will be more efficient if it is not empty
 // `caches` is cache instances to be binded
-func Bind(pool string, caches ...*ecache.Cache) error {
-	c, _ := m.LoadOrStore(pool, &[]*ecache.Cache{})
-	*(c.(*[]*ecache.Cache)) = append(*(c.(*[]*ecache.Cache)), caches...)
+func Bind(pool string, caches ...*ecache2.Cache[string]) error {
+	c, _ := m.LoadOrStore(pool, &[]*ecache2.Cache[string]{})
+	*(c.(*[]*ecache2.Cache[string])) = append(*(c.(*[]*ecache2.Cache[string])), caches...)
 	return nil
 }
 

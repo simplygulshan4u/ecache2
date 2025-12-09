@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v8"
-	"github.com/orca-zhang/ecache"
-	"github.com/orca-zhang/ecache/dist"
+	"github.com/orca-zhang/ecache2"
+	"github.com/orca-zhang/ecache2/dist"
 )
 
 var rdb *redis.Client
@@ -25,8 +25,8 @@ func init() {
 
 func TestBind(t *testing.T) {
 	dist.Init(Take(rdb, 10000))
-	lc1 := ecache.NewLRUCache(1, 100, 10*time.Second)
-	lc2 := ecache.NewLRUCache(1, 100, 10*time.Second)
+	lc1 := ecache2.NewLRUCache[string](1, 100, 10*time.Second)
+	lc2 := ecache2.NewLRUCache[string](1, 100, 10*time.Second)
 	lc1.Put("1", "1")
 	lc2.Put("1", "1")
 	lc1.Put("2", "1")
@@ -61,7 +61,7 @@ func TestDisconnect(t *testing.T) {
 
 /*
 func TestConcurrent(t *testing.T) {
-	lc := ecache.NewLRUCache(4, 1, 2*time.Second).LRU2(1)
+	lc := ecache2.NewLRUCache[string](4, 1, 2*time.Second).LRU2(1)
 	dist.Bind("lc", lc)
 	var wg sync.WaitGroup
 	for index := 0; index < 10000; index++ {

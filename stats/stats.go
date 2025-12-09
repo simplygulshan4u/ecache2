@@ -5,7 +5,7 @@ import (
 	"sync/atomic"
 	"unsafe"
 
-	"github.com/orca-zhang/ecache"
+	"github.com/orca-zhang/ecache2"
 )
 
 var m sync.Map
@@ -26,7 +26,7 @@ func (s *StatsNode) HitRate() float64 {
 // Bind - to stats a cache
 // `pool` can be used to classify instances that store same items
 // `caches` is cache instances to be binded
-func Bind(pool string, caches ...*ecache.Cache) error {
+func Bind(pool string, caches ...*ecache2.Cache[string]) error {
 	v, _ := m.LoadOrStore(pool, &StatsNode{})
 	for _, c := range caches {
 		c.Inspect(func(action int, _ string, _ *interface{}, _ []byte, status int) {

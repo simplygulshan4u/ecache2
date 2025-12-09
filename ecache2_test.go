@@ -1,4 +1,4 @@
-package ecache
+package ecache2
 
 import (
 	"bytes"
@@ -9,9 +9,9 @@ import (
 	"time"
 )
 
-var on = func(int, string, *interface{}, []byte, int) {}
+var on inspector[string] = func(int, string, *interface{}, []byte, int) {}
 
-var inst = NewLRUCache(1, 1, time.Second)
+var inst = NewLRUCache[string](1, 1, time.Second)
 
 func iface(i interface{}) *interface{} { return &i }
 
@@ -21,14 +21,14 @@ type Elem struct {
 }
 
 func Test_create(t *testing.T) {
-	c := create(5)
+	c := create[string](5)
 	if len(c.hmap) != 0 {
 		t.Error("case 1 failed")
 	}
 }
 
 func Test_put(t *testing.T) {
-	c := create(5)
+	c := create[string](5)
 	c.put("1", iface("1"), nil, now()+int64(10*time.Second), on)
 	c.put("2", iface("2"), nil, now()+int64(10*time.Second), on)
 	c.put("1", iface("3"), nil, now()+int64(10*time.Second), on)
@@ -140,7 +140,7 @@ func Test_put(t *testing.T) {
 }
 
 func Test_get(t *testing.T) {
-	c := create(2)
+	c := create[string](2)
 	c.put("1", iface("1"), nil, now()+int64(10*time.Second), on)
 	c.put("2", iface("2"), nil, now()+int64(10*time.Second), on)
 	if v, _ := c.get("1"); *(v.v.i) != "1" {
@@ -170,7 +170,7 @@ func Test_get(t *testing.T) {
 }
 
 func Test_delete(t *testing.T) {
-	c := create(5)
+	c := create[string](5)
 	c.put("3", iface("4"), nil, now()+int64(10*time.Second), on)
 	c.put("4", iface("5"), nil, now()+int64(10*time.Second), on)
 	c.put("5", iface("6"), nil, now()+int64(10*time.Second), on)
@@ -256,7 +256,7 @@ func Test_delete(t *testing.T) {
 }
 
 func Test_walk(t *testing.T) {
-	c := create(5)
+	c := create[string](5)
 	c.put("3", iface(4), nil, now()+int64(10*time.Second), on)
 	c.put("4", iface(5), nil, now()+int64(10*time.Second), on)
 	c.put("5", iface(6), nil, now()+int64(10*time.Second), on)
@@ -339,7 +339,7 @@ func TestMaskOfNextPowOf2(t *testing.T) {
 }
 
 func TestExpiration(t *testing.T) {
-	lc := NewLRUCache(2, 1, time.Second)
+	lc := NewLRUCache[string](2, 1, time.Second)
 	lc.Put("1", "2")
 	if v, ok := lc.Get("1"); !ok || v != "2" {
 		t.Error("case 1 failed")
@@ -350,7 +350,7 @@ func TestExpiration(t *testing.T) {
 	}
 
 	// permanent
-	lc2 := NewLRUCache(2, 1, 0)
+	lc2 := NewLRUCache[string](2, 1, 0)
 	lc2.Put("1", "2")
 	if v, ok := lc2.Get("1"); !ok || v != "2" {
 		t.Error("case 1 failed")
@@ -362,7 +362,7 @@ func TestExpiration(t *testing.T) {
 }
 
 func TestLRUCache(t *testing.T) {
-	lc := NewLRUCache(1, 3, 1*time.Second)
+	lc := NewLRUCache[string](1, 3, 1*time.Second)
 	lc.Put("1", "1")
 	lc.Put("2", "2")
 	lc.Put("3", "3")
@@ -377,7 +377,7 @@ func TestLRUCache(t *testing.T) {
 
 func TestWalk(t *testing.T) {
 	m := make(map[string]string, 0)
-	lc := NewLRUCache(2, 3, 10*time.Second).LRU2(3)
+	lc := NewLRUCache[string](2, 3, 10*time.Second).LRU2(3)
 	lc.Put("1", "1")
 	m["1"] = "1"
 	lc.Put("2", "2")
@@ -405,7 +405,7 @@ func TestWalk(t *testing.T) {
 }
 
 func TestPutGet(t *testing.T) {
-	lc := NewLRUCache(1, 10, time.Second)
+	lc := NewLRUCache[string](1, 10, time.Second)
 	lc.Put("1", "1")
 	if v, _ := lc.Get("1"); v != "1" {
 		t.Error("case 1 failed")
@@ -485,7 +485,7 @@ func TestPutGet(t *testing.T) {
 }
 
 func TestLRU2Cache(t *testing.T) {
-	lc := NewLRUCache(1, 3, time.Second).LRU2(1)
+	lc := NewLRUCache[string](1, 3, time.Second).LRU2(1)
 	lc.Put("1", "1")
 	lc.Put("2", "2")
 	lc.Put("3", "3")
@@ -537,7 +537,7 @@ func TestLRU2Cache(t *testing.T) {
 }
 
 func TestConcurrent(t *testing.T) {
-	lc := NewLRUCache(4, 1, 2*time.Second)
+	lc := NewLRUCache[string](4, 1, 2*time.Second)
 	var wg sync.WaitGroup
 	for index := 0; index < 1000000; index++ {
 		wg.Add(3)
@@ -558,7 +558,7 @@ func TestConcurrent(t *testing.T) {
 }
 
 func TestConcurrentLRU2(t *testing.T) {
-	lc := NewLRUCache(4, 1, 2*time.Second).LRU2(1)
+	lc := NewLRUCache[string](4, 1, 2*time.Second).LRU2(1)
 	var wg sync.WaitGroup
 	for index := 0; index < 1000000; index++ {
 		wg.Add(3)
@@ -579,7 +579,7 @@ func TestConcurrentLRU2(t *testing.T) {
 }
 
 func TestInspect(t *testing.T) {
-	lc := NewLRUCache(1, 3, 1*time.Second)
+	lc := NewLRUCache[string](1, 3, 1*time.Second)
 	lc.Inspect(func(action int, key string, iface *interface{}, b []byte, ok int) {
 		if iface != nil {
 			fmt.Println(action, key, *iface, ok)
@@ -604,7 +604,7 @@ func TestInspect(t *testing.T) {
 }
 
 func TestForIssue7(t *testing.T) {
-	lc := NewLRUCache(16, 65535, 100*time.Millisecond)
+	lc := NewLRUCache[string](16, 65535, 100*time.Millisecond)
 	var wg sync.WaitGroup
 	for index := 0; index < 1000000; index++ {
 		wg.Add(3)
@@ -623,7 +623,7 @@ func TestForIssue7(t *testing.T) {
 	}
 	wg.Wait()
 
-	lc = NewLRUCache(65535, 16, 100*time.Millisecond)
+	lc = NewLRUCache[string](65535, 16, 100*time.Millisecond)
 	for index := 0; index < 1000000; index++ {
 		wg.Add(3)
 		go func() {

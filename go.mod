@@ -1,9 +1,14 @@
-module github.com/orca-zhang/ecache
+module github.com/orca-zhang/ecache2
 
-go 1.14
+go 1.18
 
 require (
 	github.com/go-redis/redis/v7 v7.4.1
 	github.com/go-redis/redis/v8 v8.11.4
 	github.com/gomodule/redigo v1.8.6
+)
+
+require (
+	github.com/cespare/xxhash/v2 v2.1.2 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 )

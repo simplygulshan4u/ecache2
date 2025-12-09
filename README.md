@@ -1,26 +1,26 @@
 [English README | 英文说明](README_en.md)
 
-# 🦄 ecache
+# 🦄 ecache2
 <p align="center">
   <a href="#">
-    <img src="https://github.com/orca-zhang/ecache/raw/master/doc/logo.svg">
+    <img src="https://github.com/orca-zhang/ecache2/raw/master/doc/logo.svg">
   </a>
 </p>
 
 <p align="center">
   <a href="/go.mod#L3" alt="go version">
-    <img src="https://img.shields.io/badge/go%20version-%3E=1.11-brightgreen?style=flat"/>
+    <img src="https://img.shields.io/badge/go%20version-%3E=1.18-brightgreen?style=flat"/>
   </a>
-  <a href="https://goreportcard.com/badge/github.com/orca-zhang/ecache" alt="goreport">
-    <img src="https://goreportcard.com/badge/github.com/orca-zhang/ecache">
+  <a href="https://goreportcard.com/badge/github.com/orca-zhang/ecache2" alt="goreport">
+    <img src="https://goreportcard.com/badge/github.com/orca-zhang/ecache2">
   </a>
-  <a href="https://orca-zhang.semaphoreci.com/projects/ecache" alt="buiding status">
-    <img src="https://orca-zhang.semaphoreci.com/badges/ecache.svg?style=shields">
+  <a href="https://orca-zhang.semaphoreci.com/projects/ecache2" alt="buiding status">
+    <img src="https://orca-zhang.semaphoreci.com/badges/ecache2.svg?style=shields">
   </a>
-  <a href="https://codecov.io/gh/orca-zhang/ecache" alt="codecov">
-    <img src="https://codecov.io/gh/orca-zhang/ecache/branch/master/graph/badge.svg?token=F6LQbADKkq"/>
+  <a href="https://codecov.io/gh/orca-zhang/ecache2" alt="codecov">
+    <img src="https://codecov.io/gh/orca-zhang/ecache2/branch/master/graph/badge.svg?token=Tt42j8A42u"/>
   </a>
-  <a href="https://github.com/orca-zhang/ecache/blob/master/LICENSE" alt="license MIT">
+  <a href="https://github.com/orca-zhang/ecache2/blob/master/LICENSE" alt="license MIT">
     <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat">
   </a>
   <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Forca-zhang%2Fcache?ref=badge_shield" alt="FOSSA Status">
@@ -34,8 +34,10 @@
 
 ## 特性
 
-- 🤏 代码量<300行、30s完成接入
+- 🤏 代码量<350行、30s完成接入
 - 🚀 高性能、极简设计、并发安全
+- 🎯 **泛型支持**：支持多种 key 类型（string、int64、int32、int、uint64、uint32、uint）
+- ⚡ **智能哈希**：string key 使用 BKRD hash，整数 key 直接使用值分片（无需哈希计算）
 - 🌈 支持`LRU` 和 [`LRU-2`](#LRU-2模式)两种模式
 - 🦖 额外[小组件](#分布式一致性组件)支持分布式一致性
 
@@ -50,7 +52,7 @@
       <td></td>
       <td><a href="https://github.com/allegro/bigcache">bigcache</a></td>
       <td><a href="https://github.com/FishGoddess/cachego">cachego</a></td>
-      <td><a href="https://github.com/orca-zhang/ecache"><strong>ecache🌟</strong></a></td>
+      <td><a href="https://github.com/orca-zhang/ecache2"><strong>ecache2🌟</strong></a></td>
       <td><a href="https://github.com/coocood/freecache">freecache</a></td>
       <td><a href="https://github.com/bluele/gcache">gcache</a></td>
       <td><a href="https://github.com/patrickmn/go-cache">gocache</a></td>
@@ -189,10 +191,10 @@
    </tr>
 </table>
 
-![](https://github.com/orca-zhang/ecache/raw/master/doc/benchmark.png)
+![](https://github.com/orca-zhang/ecache2/raw/master/doc/benchmark.png)
 
 > gc pause测试结果 [代码由`bigcache`提供](https://github.com/allegro/bigcache-bench)（数值越低越好）
-![](https://github.com/orca-zhang/ecache/raw/master/doc/gc.png)
+![](https://github.com/orca-zhang/ecache2/raw/master/doc/gc.png)
 
 ### 目前正在生产环境大流量验证中
 - [`已验证`]公众号后台(几百QPS)：用户信息、订单信息、配置信息
@@ -206,14 +208,23 @@
 import (
     "time"
 
-    "github.com/orca-zhang/ecache"
+    "github.com/orca-zhang/ecache2"
 )
 ```
 
 #### 定义实例（预计5秒）
 > 可以放置在任意位置（全局也可以），建议就近定义
+> 
+> **泛型版本**：支持多种 key 类型，string key 使用 BKRD hash，整数 key 直接使用值分片
 ``` go
-var c = ecache.NewLRUCache(16, 200, 10 * time.Second)
+// string key - 使用 BKRD hash
+var c = ecache.NewLRUCache[string](16, 200, 10 * time.Second)
+
+// int64 key - 不使用 BKRD hash，直接使用 key 值分片（性能更优）
+var c2 = ecache.NewLRUCache[int64](16, 200, 10 * time.Second)
+
+// int32 key - 同样不使用 BKRD hash
+var c3 = ecache.NewLRUCache[int32](16, 200, 10 * time.Second)
 ```
 
 #### 设置缓存（预计5秒）
@@ -238,7 +249,7 @@ c.Del("uid1")
 #### 下载包（预计5秒）
 
 > 非go modules模式：\
-> sh>  ```go get -u github.com/orca-zhang/ecache```
+> sh>  ```go get -u github.com/orca-zhang/ecache2```
 
 > go modules模式：\
 > sh>  ```go mod tidy && go mod download```
@@ -276,11 +287,29 @@ c.Del("uid1")
 
 ## 特别场景
 
-### 整型键、整型值和字节数组
-``` go
-// 整型键
-c.Put(strconv.FormatInt(d, 10), o) // d为`int64`类型
+### 泛型 key 类型支持
 
+ecache2 支持多种 key 类型，整数类型 key 无需哈希计算，性能更优：
+
+``` go
+// string key - 使用 BKRD hash
+var cStr = ecache.NewLRUCache[string](16, 200, 10 * time.Second)
+cStr.Put("uid1", userInfo)
+
+// int64 key - 直接使用 key 值分片，无需 BKRD hash
+var cInt64 = ecache.NewLRUCache[int64](16, 200, 10 * time.Second)
+cInt64.Put(int64(12345), userInfo)
+if v, ok := cInt64.Get(int64(12345)); ok {
+    // 使用 v
+}
+
+// int32 key - 同样直接使用 key 值分片
+var cInt32 = ecache.NewLRUCache[int32](16, 200, 10 * time.Second)
+cInt32.Put(int32(456), userInfo)
+```
+
+### 整型值和字节数组
+``` go
 // 整型值
 c.PutInt64("uid1", int64(1))
 if d, ok := c.GetInt64("uid1"); ok {
@@ -300,7 +329,7 @@ if b, ok := c.GetBytes("uid1"); ok {
 
 > 直接在`NewLRUCache()`后面跟`.LRU2(<num>)`就好，参数`<num>`代表`LRU-2`热队列的item上限个数（每个桶）
 ``` go
-var c = ecache.NewLRUCache(16, 200, 10 * time.Second).LRU2(1024)
+var c = ecache.NewLRUCache[string](16, 200, 10 * time.Second).LRU2(1024)
 ```
 
 ### 空缓存哨兵（不存在的对象不用再回源）
@@ -382,7 +411,7 @@ cache.Inspect(func(action int, key string, iface *interface{}, bytes []byte, sta
 ##### 引入stats包
 ``` go
 import (
-    "github.com/orca-zhang/ecache/stats"
+    "github.com/orca-zhang/ecache2/stats"
 )
 ```
 
@@ -411,7 +440,7 @@ stats.Stats().Range(func(k, v interface{}) bool {
 ### 引入dist包
 ``` go
 import (
-    "github.com/orca-zhang/ecache/dist"
+    "github.com/orca-zhang/ecache2/dist"
 )
 ```
 
@@ -430,7 +459,7 @@ var _ = dist.Bind("token", caches...)
 #### go-redis v7及以下版本
 ``` go
 import (
-    "github.com/orca-zhang/ecache/dist/goredis/v7"
+    "github.com/orca-zhang/ecache2/dist/goredis/v7"
 )
 
 dist.Init(goredis.Take(redisCli)) // redisCli是*redis.RedisClient类型
@@ -440,7 +469,7 @@ dist.Init(goredis.Take(redisCli, 100000)) // 第二个参数是channel缓冲区�
 #### go-redis v8及以上版本
 ``` go
 import (
-    "github.com/orca-zhang/ecache/dist/goredis"
+    "github.com/orca-zhang/ecache2/dist/goredis"
 )
 
 dist.Init(goredis.Take(redisCli)) // redisCli是*redis.RedisClient类型
@@ -451,7 +480,7 @@ dist.Init(goredis.Take(redisCli, 100000)) // 第二个参数是channel缓冲区�
 > 注意⚠️`github.com/gomodule/redigo` 要求最低版本 `go 1.14`
 ``` go
 import (
-    "github.com/orca-zhang/ecache/dist/redigo"
+    "github.com/orca-zhang/ecache2/dist/redigo"
 )
 
 dist.Init(redigo.Take(pool)) // pool是*redis.Pool类型
@@ -464,11 +493,20 @@ dist.Init(redigo.Take(pool)) // pool是*redis.Pool类型
 dist.OnDel("user", "uid1") // user是池子名称，uid1是要删除的key
 ```
 
+## 从 `ecache` 升级到 `ecache2`
+
+- **重大更新**：ecache2 是完全基于 Go 泛型的重构版本
+- 主要变化：
+1. 引入包 `github.com/orca-zhang/ecache2`（已经是新版本）
+2. `ecache.NewLRUCache` 改为 `ecache.NewLRUCache[string]`（需要指定 key 类型）
+3. Go 版本要求从 1.11+ 升级到 **1.18+**
+4. 新增特性：支持整数类型 key（int64、int32 等），整数 key 无需 BKRD hash，性能更优
+
 ## 使用[`lrucache`](http://github.com/orca-zhang/lrucache)的老用户升级指导
 
 - 只需四步：
-1. 引入包 `github.com/orca-zhang/lrucache` 改为 `github.com/orca-zhang/ecache`
-2. `lrucache.NewSyncCache` 改为 `ecache.NewLRUCache`
+1. 引入包 `github.com/orca-zhang/lrucache` 改为 `github.com/orca-zhang/ecache2`
+2. `lrucache.NewSyncCache` 改为 `ecache.NewLRUCache[string]`
 3. 第3个参数从默认的单位秒改为`*time.Second`
 4. `Delete`方法改为`Del`
 
@@ -519,9 +557,12 @@ dist.OnDel("user", "uid1") // user是池子名称，uid1是要删除的key
 > `ecache`是[`lrucache`](http://github.com/orca-zhang/lrucache)库的升级版本
 
 - 最下层是用原生map和双链表实现的最基础`LRU`（最久未访问）
-  - PS：我实现的其他版本（[go](https://github.com/orca-zhang/lrucache) / [c++](https://github.com/ez8-co/linked_hash) / [js](https://github.com/orca-zhang/ecache.js)）在leetcode都是超越100%的解法
+  - PS：我实现的其他版本（[go](https://github.com/orca-zhang/lrucache) / [c++](https://github.com/ez8-co/linked_hash) / [js](https://github.com/orca-zhang/ecache2js)）在leetcode都是超越100%的解法
 - 第2层包了分桶策略、并发控制、过期控制（会自动选择2的幂次个桶，便于掩码计算）
 - 第2.5层用很简单的方式实现了`LRU-2`能力，代码不超过20行，直接看源码（搜关键词`LRU-2`）
+- **第3层（ecache2新增）**：基于 Go 泛型实现，支持多种 key 类型
+  - string key：使用 BKRD hash 进行分片
+  - 整数 key（int64、int32 等）：直接使用 key 值进行分片，无需哈希计算，性能更优
 
 ### 什么是LRU
 - 最久未访问的优先驱逐
@@ -556,7 +597,8 @@ dist.OnDel("user", "uid1") // user是池子名称，uid1是要删除的key
 - 不用异步清理（没意义，分散到写时驱逐更合理，不易抖动）
 - 没有用内存容量来控制（单个item的大小一般都有预估大小，简单控制个数即可）
 - 分桶策略，自动选择2的幂次个桶（分散锁竞争，2的幂次掩码操作更快）
-- key用`string`类型（可扩展性强；语言内建支持引用，更省内存）
+- **泛型支持**：支持多种 key 类型（string、int64、int32 等）
+- **智能哈希**：string key 使用 BKRD hash，整数 key 直接使用值分片（无需哈希计算）
 - 不用虚表头（虽然绕脑一些，但是有20%左右提升）
 - 选择`LRU-2`实现`LRU-K`（实现简单，近乎没有额外损耗）
 - 可以直接存指针（不用序列化，有些场景如果使用`[]byte`那优势大大降低）

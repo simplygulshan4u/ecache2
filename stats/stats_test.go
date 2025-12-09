@@ -6,11 +6,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/orca-zhang/ecache"
+	"github.com/orca-zhang/ecache2"
 )
 
 func TestLRU2Cache(t *testing.T) {
-	lc := ecache.NewLRUCache(1, 3, 10*time.Second).LRU2(1)
+	lc := ecache2.NewLRUCache[string](1, 3, 10*time.Second).LRU2(1)
 	Bind("lc", lc)
 
 	v, _ := Stats().Load("lc")
@@ -119,7 +119,7 @@ func TestLRU2Cache(t *testing.T) {
 }
 
 func TestConcurrent(t *testing.T) {
-	lc := ecache.NewLRUCache(4, 1, 10*time.Second).LRU2(1)
+	lc := ecache2.NewLRUCache[string](4, 1, 10*time.Second).LRU2(1)
 	Bind("aaaa", lc)
 	var wg sync.WaitGroup
 	for index := 0; index < 1000000; index++ {
@@ -145,9 +145,9 @@ func TestConcurrent(t *testing.T) {
 }
 
 func TestBindToExistPool(t *testing.T) {
-	lcOld := ecache.NewLRUCache(1, 3, 1*time.Second).LRU2(1)
+	lcOld := ecache2.NewLRUCache[string](1, 3, 1*time.Second).LRU2(1)
 	Bind("lc2", lcOld)
-	lc := ecache.NewLRUCache(1, 3, 1*time.Second).LRU2(1)
+	lc := ecache2.NewLRUCache[string](1, 3, 1*time.Second).LRU2(1)
 	Bind("lc2", lc)
 	lc.Put("1", "1")
 	Stats().Range(func(k, v interface{}) bool {
