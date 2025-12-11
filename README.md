@@ -416,11 +416,13 @@ o.Status = 1      // 修改副本的字段
 //   `action`:GET, `status`: miss=0, hit=1
 //   `action`:DEL, `status`: miss=0, hit=1
 //   `iface`/`bytes`只有在`status`不为0或者`action`为PUT时才不为nil
-type inspector func(action int, key string, iface *interface{}, bytes []byte, status int)
+//   注意：`key` 的类型取决于缓存实例的泛型类型参数 K
+type inspector[K comparable] func(action int, key K, iface *interface{}, bytes []byte, status int)
 ```
 
-- 使用方式
+- 使用方式（string key）
 ``` go
+cache := ecache2.NewLRUCache[string](16, 200, 10 * time.Second)
 cache.Inspect(func(action int, key string, iface *interface{}, bytes []byte, status int) {
   // TODO: 实现你想做的事情
   //     监听器会根据注入顺序依次执行
@@ -433,19 +435,47 @@ cache.Inspect(func(action int, key string, iface *interface{}, bytes []byte, sta
 })
 ```
 
+- 使用方式（int64 key）
+``` go
+cache := ecache2.NewLRUCache[int64](16, 200, 10 * time.Second)
+cache.Inspect(func(action int, key int64, iface *interface{}, bytes []byte, status int) {
+  // key 的类型是 int64，不再是 string
+  // 其他用法相同
+})
+```
+
 ### 遍历所有元素
 
 ``` go
   // 只会遍历缓存中存在且未过期的项
-  cache.Walk(func(key string, iface *interface{}, bytes []byte, expireAt int64) bool {
-    // `key`是值，`iface`/`bytes`是值，`expireAt`是过期时间
+  // 注意：`key` 的类型取决于缓存实例的泛型类型参数 K
+  cache.Walk(func(key K, iface *interface{}, bytes []byte, expireAt int64) bool {
+    // `key`是键值（类型为 K），`iface`/`bytes`是值，`expireAt`是过期时间（纳秒时间戳）
 
     // - 如何获取正确的值 -
     //   - `Put`:      `*iface`
     //   - `PutBytes`: `bytes`
     //   - `PutInt64`: `ecache2.ToInt64(bytes)`
-    return true // 是否继续遍历
+    return true // 返回 true 继续遍历，返回 false 停止遍历
   })
+```
+
+- 示例（string key）
+``` go
+cache := ecache2.NewLRUCache[string](16, 200, 10 * time.Second)
+cache.Walk(func(key string, iface *interface{}, bytes []byte, expireAt int64) bool {
+  fmt.Printf("key: %s, expireAt: %d\n", key, expireAt)
+  return true // 继续遍历
+})
+```
+
+- 示例（int64 key）
+``` go
+cache := ecache2.NewLRUCache[int64](16, 200, 10 * time.Second)
+cache.Walk(func(key int64, iface *interface{}, bytes []byte, expireAt int64) bool {
+  fmt.Printf("key: %d, expireAt: %d\n", key, expireAt)
+  return true // 继续遍历
+})
 ```
 
 ## 统计缓存使用情况

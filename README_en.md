@@ -416,11 +416,13 @@ o.Status = 1      // Modify the field of the copy
 // `action`:GET, `status`: miss=0, hit=1
 // `action`:DEL, `status`: miss=0, hit=1
 // `iface`/`bytes` is not `nil` when `status` is not 0 or `action` is PUT
-type inspector func(action int, key string, iface *interface{}, bytes []byte, status int)
+// Note: The type of `key` depends on the generic type parameter K of the cache instance
+type inspector[K comparable] func(action int, key K, iface *interface{}, bytes []byte, status int)
 ```
 
-- How to use
+- How to use (string key)
 ``` go
+cache := ecache2.NewLRUCache[string](16, 200, 10 * time.Second)
 cache.Inspect(func(action int, key string, iface *interface{}, bytes []byte, status int) {
    // TODO: add what you want to do
    //     Inspector will be executed in sequence according to the injection order
@@ -433,19 +435,47 @@ cache.Inspect(func(action int, key string, iface *interface{}, bytes []byte, sta
 })
 ```
 
+- How to use (int64 key)
+``` go
+cache := ecache2.NewLRUCache[int64](16, 200, 10 * time.Second)
+cache.Inspect(func(action int, key int64, iface *interface{}, bytes []byte, status int) {
+  // The type of key is int64, not string
+  // Other usage is the same
+})
+```
+
 ### Fetch all items
 
 ``` go
-  // only invalid items can be fetched
-  cache.Walk(func(key string, iface *interface{}, bytes []byte, expireAt int64) bool {
-    // `key` is key of item, `iface`/`bytes` is value of item, `expireAt` is the time that item expired
+  // only valid (non-expired) items can be fetched
+  // Note: The type of `key` depends on the generic type parameter K of the cache instance
+  cache.Walk(func(key K, iface *interface{}, bytes []byte, expireAt int64) bool {
+    // `key` is the key of item (type K), `iface`/`bytes` is the value of item, `expireAt` is the expiration timestamp in nanoseconds
 
     // - how to fetch right value -
     //   - `Put`:      `*iface`
     //   - `PutBytes`: `bytes`
     //   - `PutInt64`: `ecache2.ToInt64(bytes)`
-    return true // true stands for walk on
+    return true // return true to continue walking, false to stop
   })
+```
+
+- Example (string key)
+``` go
+cache := ecache2.NewLRUCache[string](16, 200, 10 * time.Second)
+cache.Walk(func(key string, iface *interface{}, bytes []byte, expireAt int64) bool {
+  fmt.Printf("key: %s, expireAt: %d\n", key, expireAt)
+  return true // continue walking
+})
+```
+
+- Example (int64 key)
+``` go
+cache := ecache2.NewLRUCache[int64](16, 200, 10 * time.Second)
+cache.Walk(func(key int64, iface *interface{}, bytes []byte, expireAt int64) bool {
+  fmt.Printf("key: %d, expireAt: %d\n", key, expireAt)
+  return true // continue walking
+})
 ```
 
 ## Cache Usage Statistics
